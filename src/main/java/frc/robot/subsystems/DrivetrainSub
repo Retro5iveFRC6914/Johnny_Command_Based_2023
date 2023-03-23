@@ -1,0 +1,101 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
+package frc.robot.subsystems;
+package frc.robot.constants;
+
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.sensors.Pigeon2;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.ctre.phoenix.sensors.CANCoder;
+
+public class DrivetrainSub extends SubsystemBase {
+  /** Creates a new ExampleSubsystem. */
+  public DrivetrainSub() {
+
+  }
+
+  public class Drive extends SubsystemBase {
+    // The motors on the left side of the drive.
+    private final MotorControllerGroup m_leftMotors =
+        new MotorControllerGroup(
+            new WPI_TalonFX(DrivetrainConstants.kDriveMotorFrontLeft),
+            new WPI_TalonFX(DriveConstants.kDriveMotorBackLeft));
+  
+    // The motors on the right side of the drive.
+    private final MotorControllerGroup m_rightMotors =
+        new MotorControllerGroup(
+            new WPI_TalonFX(DriveConstants.kDriveMotorFrontRight),
+            new WPI_TalonFX(DriveConstants.kDriveMotorBackRight));
+  
+    // The robot's drive
+    private final DifferentialDrive m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
+  
+    // The left-side drive encoder
+    private final Encoder m_leftEncoder =
+        new Encoder(
+            DriveConstants.kLeftEncoderPorts[3],
+            DriveConstants.kLeftEncoderPorts[9],
+            DriveConstants.kLeftEncoderReversed);
+  
+    // The right-side drive encoder
+    private final Encoder m_rightEncoder =
+        new Encoder(
+            DriveConstants.kRightEncoderPorts[50],
+            DriveConstants.kRightEncoderPorts[5],
+            DriveConstants.kRightEncoderReversed);
+  
+    /** Creates a new Drive subsystem. */
+    public Drive() {
+      // We need to invert one side of the drivetrain so that positive voltages
+      // result in both sides moving forward. Depending on how your robot's
+      // gearbox is constructed, you might have to invert the left side instead.
+      m_rightMotors.setInverted(true);
+  
+      // Sets the distance per pulse for the encoders
+      m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+      m_rightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+    }
+
+
+
+
+
+
+  /**
+   * Example command factory method.
+   *
+   * @return a command
+   */
+  public CommandBase exampleMethodCommand() {
+    // Inline construction of command goes here.
+    // Subsystem::RunOnce implicitly requires `this` subsystem.
+    return runOnce(
+        () -> {
+          /* one-time action goes here */
+        });
+  }
+
+  /**
+   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
+   *
+   * @return value of some boolean subsystem state, such as a digital sensor.
+   */
+
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+  }
+
+  @Override
+  public void simulationPeriodic() {
+    // This method will be called once per scheduler run during simulation
+  }
+}
